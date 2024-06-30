@@ -1,5 +1,5 @@
 import './style.css'
-import './node_modules/rss-parser/dist/rss-parser.min.js'
+import RSSParser from 'rss-parser/dist/rss-parser.min.js';
 
 let button = document.querySelector(".button");
 let input = document.querySelector("#input");
@@ -25,6 +25,7 @@ function buttonToggle(){
         button.className = 'button disabled';
     }
 }
+
 
 async function Loader() {
   try {
@@ -59,7 +60,7 @@ input.addEventListener('input', () => {
 });
 
 
-
+//Proxy
 const CORS_PROXY = "https://api.allorigins.win/raw?url="
 
 let parser = new RSSParser();
