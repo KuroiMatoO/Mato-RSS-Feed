@@ -136,7 +136,7 @@ let themeIMG = document.querySelector('#theme-toggle img');
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
-  themeIMG.src = `/img/${theme}.png`;
+  themeIMG.src = `img/${theme}.png`;
 
 }
 
@@ -144,7 +144,7 @@ function loadTheme() {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme) {
     setTheme(savedTheme);
-    themeIMG.src = `/img/${savedTheme}.png`;
+    themeIMG.src = `img/${savedTheme}.png`;
   } else if (prefersDarkScheme.matches) {
     setTheme('dark');
   } else {
@@ -157,9 +157,9 @@ function toggleTheme() {
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
   setTheme(newTheme);
   if (newTheme === 'dark'){
-    themeIMG.src = "/img/dark.png";
+    themeIMG.src = "img/dark.png";
   } else {
-    themeIMG.src = "/img/light.png"
+    themeIMG.src = "img/light.png"
   }
 }
 
