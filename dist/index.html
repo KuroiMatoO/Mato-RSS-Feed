@@ -1,21 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
-    <title>RSS Feed</title>
-    <script type="module" crossorigin src="./index-BNnMMHGP.js"></script>
-    <link rel="stylesheet" crossorigin href="./index-EDGRQ2A_.css">
-  </head>
-  <body>
-    <div id="wrapper">
-      <div id="input-container" class="minimized">
-          <input id="input" type="text" placeholder="Insert RSS link" autocomplete="off" required>
-          <div class="button disabled">
-            <img width="32" height="32" src="https://img.icons8.com/external-solidglyph-m-oki-orlando/32/858585/external-Enter-basic-ui-solidglyph-m-oki-orlando.png">
-          </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+  <title>RSS Feed</title>
+  <script type="module" crossorigin src="./index-CvtmiDDA.js"></script>
+  <link rel="stylesheet" crossorigin href="./index-B9_dCtIJ.css">
+</head>
+
+<body>
+  <div id="wrapper">
+    <button id="theme-toggle"><img width='30px' height='30px' src=""></button>
+    <div id="input-container" class="minimized">
+      <input id="input" type="text" placeholder="Insert RSS link" autocomplete="off" required>
+      <div class="button disabled">
+        <img width="32" height="32"
+          src="https://img.icons8.com/external-solidglyph-m-oki-orlando/32/858585/external-Enter-basic-ui-solidglyph-m-oki-orlando.png">
       </div>
-      <div id="result-container" class="expanded"></div>
     </div>
-  </body>
+    <div id="result-container" class="expanded">
+      <div id="results">
+        <div class='loader hidden'></div>
+      <div class='loader_bg hidden'></div>
+      </div>
+    </div>
+  </div>
+  <script src="/node_modules/rss-parser/dist/rss-parser.min.js"></script>
+</body>
+
 </html>
