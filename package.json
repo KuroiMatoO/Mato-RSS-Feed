@@ -13,5 +13,8 @@
   },
   "dependencies": {
     "rss-parser": "^3.13.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.6.1"
   }
 }
