@@ -72,8 +72,11 @@ async function Loader() {
 
 
 //Proxy
-// const CORS_PROXY = "https://api.allorigins.win/raw?url="
-const CORS_PROXY = "https://corsproxy.io/?"
+const CORS_PROXY = "https://api.allorigins.win/raw?url="
+// const CORS_PROXY = "https://corsproxy.io/?"
+// const CORS_PROXY = "http://www.whateverorigin.org/get?url="
+
+
 
 let parser = new RSSParser({
   headers: {
@@ -138,22 +141,39 @@ function ParseRSS() {
        
         if (item.categories !== undefined) {
           if (Object.keys(item.categories).length > 1) {
-            infoRow.textContent = `${formattedDate} | `;
-            item.categories.forEach((category) => {
-              const tag = document.createElement('span');
-              tag.className = 'tag';
-              tag.textContent = `[${category}] `;
-              tags.appendChild(tag);
-              filterTags(item.categories)
-            })
+            for (let i = 0; i < Object.keys(item.categories).length; i++) {
+              if (typeof item.categories[i] == "object") {
+                for (const [key, value] of Object.entries(item.categories[i])) {
+                  if (typeof value == 'string') {
+                    infoRow.textContent = `${formattedDate}  `;
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.textContent = `${value}`;
+                    tags.appendChild(tag);
+                    console.log(value)
+                    allTags.add(value)
+                  }
+                }
+              } else {
+                infoRow.textContent = `${formattedDate}  `;
+                const tag = document.createElement('span');
+                tag.className = 'tag';
+                tag.textContent = `${item.categories[i]}`;
+                tags.appendChild(tag);
+                allTags.add(item.categories[i])
+                
+              }
+            }
+            
           } else {
-            infoRow.textContent = `${formattedDate} | `;
+            infoRow.textContent = `${formattedDate}  `;
             const tag = document.createElement('span');
             tag.className = 'tag';
-            tag.textContent = `[${item.categories}] `;
+            tag.textContent = `${item.categories}`;
             tags.appendChild(tag);
-            filterTags(item.categories)
-
+            item.categories.forEach((category) => {
+              allTags.add(category)
+            })
           }
         } else {
           infoRow.textContent = `${formattedDate}`
@@ -184,6 +204,7 @@ function ParseRSS() {
       }
 
       populateFeed(RSSData, 'results');
+      console.log(allTags)
       fetchFilterTags()
     })
   }
@@ -193,24 +214,16 @@ function ParseRSS() {
 //Filtering
 let allTags = new Set();
 
-function filterTags(categories) {
-
-  if (categories !== undefined) {
-    categories.forEach((category) => {
-      allTags.add(category);
-      // console.log(categories)
-    })
-  }
-  // console.log(allTags)
-}
 
 
 let filterBtn = document.createElement('div');
+let filterWrapper = document.createElement('div')
 let filterList = document.createElement('div');
-
+let filterListContent = document.createElement('div');
 
 function fetchFilterTags(){
-  filterList.innerHTML = '';
+  filterListContent.innerHTML = '';
+  
 
   if (document.querySelector('.filter-btn') == undefined){
     // filterBtn = document.createElement('div');
@@ -219,35 +232,45 @@ function fetchFilterTags(){
   }
   if (document.querySelector('.filter-list') == undefined){
     filterList.className = 'filter-list invisible';
-    resultContainer.before(filterList);
+    filterWrapper.className = 'filter-wrapper invisible';
+    filterListContent.className = 'filter-list-content'
+    resultContainer.before(filterWrapper);
+    filterWrapper.appendChild(filterList);
+    filterList.appendChild(filterListContent);
   }
       
   
-    
+  let x = 1;
     allTags.forEach((tag) => {
-      let filterItem = document.createElement('div')
-      filterItem.className = 'filter-item';
-      filterList.appendChild(filterItem)
+      // let filterItem = document.createElement('div')
+      // filterItem.className = 'filter-item';
+      // filterListContent.appendChild(filterItem)
+      
       
       let filterCheckBox = document.createElement('input')
       filterCheckBox.type = 'checkbox';
       filterCheckBox.className = 'filter-checkbox';
-      filterItem.appendChild(filterCheckBox)
+      filterCheckBox.id = `chbx${x}`;
+      filterListContent.appendChild(filterCheckBox)
   
-      let filterTag = document.createElement('span');
+      let filterTag = document.createElement('label');
       filterTag.className = 'filter-tag';
+      filterTag.htmlFor = `chbx${x}`
       filterTag.textContent = tag;
-      filterItem.appendChild(filterTag);
+      filterListContent.appendChild(filterTag);
+      x += x;
     })
+    allTags.clear()
+    x = 1;
 }
 
 filterBtn.addEventListener('click', filterToggle);
 
 function filterToggle(){
-  if (filterList.className == 'filter-list invisible'){
-    filterList.className = 'filter-list';
+  if (filterWrapper.className == 'filter-wrapper invisible'){
+    filterWrapper.className = 'filter-wrapper';
   } else {
-    filterList.className = 'filter-list invisible';
+    filterWrapper.className = 'filter-wrapper invisible';
   }
 }
 
