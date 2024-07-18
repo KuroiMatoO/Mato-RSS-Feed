@@ -241,32 +241,33 @@ function fetchFilterTags(){
       
   
   let x = 1;
-    allTags.forEach((tag) => {
-      // let filterItem = document.createElement('div')
-      // filterItem.className = 'filter-item';
-      // filterListContent.appendChild(filterItem)
-      
-      
-      let filterCheckBox = document.createElement('input')
-      filterCheckBox.type = 'checkbox';
-      filterCheckBox.className = 'filter-checkbox';
-      filterCheckBox.id = `chbx${x}`;
-      filterListContent.appendChild(filterCheckBox)
   
-      let filterTag = document.createElement('label');
-      filterTag.className = 'filter-tag';
-      filterTag.htmlFor = `chbx${x}`
-      filterTag.textContent = tag;
-      filterListContent.appendChild(filterTag);
-      x += x;
-    })
-    allTags.clear()
-    x = 1;
+  allTags.forEach((tag) => {
+    // let filterItem = document.createElement('div')
+    // filterItem.className = 'filter-item';
+    // filterListContent.appendChild(filterItem)
+
+    let filterCheckBox = document.createElement('input')
+    filterCheckBox.type = 'checkbox';
+    filterCheckBox.className = 'filter-checkbox';
+    filterCheckBox.id = `chbx${x}`;
+    filterListContent.appendChild(filterCheckBox)
+
+    let filterTag = document.createElement('label');
+    filterTag.className = 'filter-tag';
+    filterTag.htmlFor = `chbx${x}`
+    filterTag.textContent = tag;
+    filterListContent.appendChild(filterTag);
+    attachTagListener(filterTag)
+    x = x + 1;
+  })
+  allTags.clear()
+  x = 1;
 }
 
-filterBtn.addEventListener('click', filterToggle);
+filterBtn.addEventListener('click', filterWrapperToggle);
 
-function filterToggle(){
+function filterWrapperToggle(){
   if (filterWrapper.className == 'filter-wrapper invisible'){
     filterWrapper.className = 'filter-wrapper';
   } else {
@@ -276,6 +277,57 @@ function filterToggle(){
 
 
 
+
+function attachTagListener(filterTag){
+  filterTag.addEventListener('click', function(event){
+    let target = event.target;
+    toggleFilterTagClass(target);
+    updateSelectedTags(target);
+    toggleFilteredItems();
+  })
+}
+
+
+function toggleFilterTagClass(target) {
+  console.log(target.textContent)
+    if (target.className == 'filter-tag') {
+      target.className = 'filter-tag checked';
+    } else {
+      target.className = 'filter-tag';
+    }
+}
+
+
+let allowedTags = [];
+
+function updateSelectedTags(target) {
+  const index = allowedTags.indexOf(target.textContent);
+  
+  if (index !== -1) {
+    console.log(`Removing ${target.textContent} from index ${index}`);
+    allowedTags.splice(index, 1);
+  } else {
+    console.log(`Adding ${target.textContent}`);
+    allowedTags.push(target.textContent);
+  }
+  console.log(allowedTags)
+}
+
+
+
+function toggleFilteredItems() {
+  const feedItems = document.querySelectorAll('.feed-item');
+  const checkedTags = Array.from(document.querySelectorAll('.checked')).map(tag => tag.textContent); //array from filter tags
+
+  feedItems.forEach(item => {
+    const itemTags = Array.from(item.querySelectorAll('.tag')).map(tag => tag.textContent); //array from feed item tags
+    
+    // Check if all checked tags are present in the item's tags
+    const shouldBeVisible = checkedTags.length === 0 || checkedTags.every(tag => itemTags.includes(tag));
+    
+    item.style.display = shouldBeVisible ? 'block' : 'none';
+  });
+}
 
 //THEME
 

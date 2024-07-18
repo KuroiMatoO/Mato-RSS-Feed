@@ -18,7 +18,7 @@
   --border-secondary: #4a525c;
   --shadow-primary:  rgba(0, 0, 0, 0.24);
   --shadow-secondary: rgba(0, 0, 0, 0.24);
-  --filter-img: url('/public/img/filter-light-theme.png')
+  --filter-img: url('img/filter-light-theme.png')
 }
 
 [data-theme="dark"] {
@@ -32,7 +32,7 @@
   --border-secondary: #a3a3a3;
   --shadow-primary:  rgba(138, 138, 138, 0.137);
   --shadow-secondary: rgba(99, 99, 99, 0.24);
-  --filter-img: url('/public/img/filter-dark-theme.png')
+  --filter-img: url('img/filter-dark-theme.png')
 
 }
 
